@@ -2,7 +2,7 @@
 <h1>🎉 SCSD (Accepted by AAAI 2025)</h1>
 <h3>Exploring Semantic Consistency and Style Diversity for Domain Generalized Semantic Segmentation</h3>
 
-[Hongwei Niu](https://github.com/nhw649), Linhuang Xie, [Jianghang Lin](https://github.com/HunterJ-Lin), Shengchuan Zhang
+[Hongwei Niu](https://github.com/nhw649), [Linhuang Xie](https://github.com/robinxlh), [Jianghang Lin](https://github.com/HunterJ-Lin), Shengchuan Zhang
 
 Xiamen University
 
@@ -64,7 +64,6 @@ sh make.sh
 <th valign="bottom">Average</th>
 <th valign="bottom">Download</th>
 <!-- TABLE BODY -->
-<!-- ROW: EOV-Seg (S) -->
 <tr>
 <td align="left">SCSD</a></td>
 <td align="center">ResNet50</td>
@@ -73,64 +72,87 @@ sh make.sh
 <td align="center">56.98</td>
 <td align="center">43.08</td>
 <td align="center">49.11</td>
-<td align="center"><a href="">ckpt</a>&nbsp;
+<td align="center"><a href="https://drive.google.com/file/d/1-2T7nSTmHZzCcI8DbfGBO43z8OALwnhC/view?usp=drive_link">ckpt</a>&nbsp;
 </tr>
 </tbody>
 </table>
 
 <table>
-<caption>Open-vocabulary semantic segmentation</caption>
+<caption>Cityscapes -> Others</caption>
 <tbody>
 <!-- START TABLE -->
 <!-- TABLE HEADER -->
 <th valign="bottom">Name</th>
 <th valign="bottom">Backbone</th>
-<th valign="bottom">A-847</th>
-<th valign="bottom">PC-459</th>
-<th valign="bottom">A-150</th>
-<th valign="bottom">PC-59</th>
-<th valign="bottom">PAS-20</th>
-<th valign="bottom">FPS</th>
+<th valign="bottom">BDD</th>
+<th valign="bottom">Mapillary</th>
+<th valign="bottom">GTAV</th>
+<th valign="bottom">Synthia</th>
+<th valign="bottom">Average</th>
 <th valign="bottom">Download</th>
 <!-- TABLE BODY -->
-<!-- ROW: EOV-Seg (S) -->
 <tr>
-<td align="left">EOV-Seg (S)</a></td>
+<td align="left">SCSD</a></td>
 <td align="center">ResNet50</td>
-<td align="center">6.6</td>
-<td align="center">11.5</td>
-<td align="center">21.9</td>
-<td align="center">46.0</td>
-<td align="center">87.2</td>
-<td align="center">24.5</td>
-<td align="center"><a href="https://drive.google.com/file/d/1UgLrRxpi4l30F8zTqhEv7cEW23TCGv3h/view?usp=drive_link">ckpt</a>&nbsp;
+<td align="center">52.25</td>
+<td align="center">62.51</td>
+<td align="center">51.00</td>
+<td align="center">39.77</td>
+<td align="center">51.38</td>
+<td align="center"><a href="https://drive.google.com/file/d/1-4V1aRDRxj3HXYuQGoBPN2vfsP_y9Ria/view?usp=drive_link">ckpt</a>&nbsp;
 </tr>
-<!-- ROW: EOV-Seg (M) -->
-<tr>
-<td align="left">EOV-Seg (M)</a></td>
-<td align="center">ResNet50x4</td>
-<td align="center">7.8</td>
-<td align="center">12.2</td>
-<td align="center">25.5</td>
-<td align="center">51.8</td>
-<td align="center">91.2</td>
-<td align="center">18.9</td>
-<td align="center"><a href="https://drive.google.com/file/d/1--SYgaWs8_Ry2ouXBJO8FfSWH7D-Pejk/view?usp=drive_link">ckpt</a>&nbsp;
-</tr>
+</tbody>
+</table>
 
-<!-- ROW: EOV-Seg (L) -->
+<table>
+<caption>GTAV+Synthia -> Others</caption>
+<tbody>
+<!-- START TABLE -->
+<!-- TABLE HEADER -->
+<th valign="bottom">Name</th>
+<th valign="bottom">Backbone</th>
+<th valign="bottom">Cityscapes</th>
+<th valign="bottom">BDD</th>
+<th valign="bottom">Mapillary</th>
+<th valign="bottom">Average</th>
+<th valign="bottom">Download</th>
+<!-- TABLE BODY -->
 <tr>
-<td align="left">EOV-Seg (L)</a></td>
-<td align="center">ConvNeXt-L</td>
-<td align="center">12.8</td>
-<td align="center">16.8</td>
-<td align="center">32.1</td>
-<td align="center">56.9</td>
-<td align="center">94.8</td>
-<td align="center">11.8</td>
-<td align="center"><a href="https://drive.google.com/file/d/1dVfHpzmCOlV6hLfUpd3nHXz62wdB7RY2/view?usp=drive_link">ckpt</a>&nbsp;
+<td align="left">SCSD</a></td>
+<td align="center">ResNet50</td>
+<td align="center">52.43</td>
+<td align="center">45.25</td>
+<td align="center">56.58</td>
+<td align="center">51.42</td>
+<td align="center"><a href="https://drive.google.com/file/d/1-2I3nv8HuDZv4d2U5Gi-91ZSCRxHpy2Y/view?usp=drive_link">ckpt</a>&nbsp;
 </tr>
+</tbody>
+</table>
 
+<table>
+<caption>GTAV -> ACDC</caption>
+<tbody>
+<!-- START TABLE -->
+<!-- TABLE HEADER -->
+<th valign="bottom">Name</th>
+<th valign="bottom">Backbone</th>
+<th valign="bottom">Night</th>
+<th valign="bottom">Snow</th>
+<th valign="bottom">Rain</th>
+<th valign="bottom">Fog</th>
+<th valign="bottom">Average</th>
+<th valign="bottom">Download</th>
+<!-- TABLE BODY -->
+<tr>
+<td align="left">SCSD</a></td>
+<td align="center">ResNet50</td>
+<td align="center">15.06</td>
+<td align="center">41.37</td>
+<td align="center">42.77</td>
+<td align="center">43.43</td>
+<td align="center">35.66</td>
+<td align="center"><a href="https://drive.google.com/file/d/1-2T7nSTmHZzCcI8DbfGBO43z8OALwnhC/view?usp=drive_link">ckpt</a>&nbsp;
+</tr>
 </tbody>
 </table>
 
