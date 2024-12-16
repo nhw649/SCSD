@@ -1,0 +1,11 @@
+_BASE_: ../maskformer2_R50_bs16_90k.yaml
+MODEL:
+  BACKBONE:
+    NAME: "CLIP"
+  WEIGHTS: ""
+  PIXEL_MEAN: [122.7709383, 116.7460125, 104.09373615]
+  PIXEL_STD: [68.5005327, 66.6321579, 70.32316305]
+DATASETS:
+  TRAIN: ("gta_trainid_train",)
+  TEST: ("cityscapes_fine_sem_seg_val", "bdd_val", "mapillary_val", "synthia_val")
+OUTPUT_DIR: "output/gtav"
