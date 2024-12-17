@@ -1,5 +1,5 @@
 <div align="center">
-<h1>🎉 SCSD (Accepted by AAAI 2025)</h1>
+<h1>🎉🎉🎉 SCSD (Accepted by AAAI 2025)</h1>
 <h3>Exploring Semantic Consistency and Style Diversity for Domain Generalized Semantic Segmentation</h3>
 
 [Hongwei Niu](https://github.com/nhw649), [Linhuang Xie](https://github.com/robinxlh), [Jianghang Lin](https://github.com/HunterJ-Lin), Shengchuan Zhang
@@ -7,7 +7,7 @@
 Xiamen University
 
 
-[[`Paper`]()] [[`Demo`]()] [[`BibTeX`](#citation)]
+[[`Paper`](https://arxiv.org/abs/2412.12050)] [[`Demo`]()] [[`BibTeX`](#citation)]
 </div>
 
 ---
@@ -218,7 +218,12 @@ python demo/demo.py --config-file configs/gtav/scsd_R50_bs2_20k.yaml \
 
 ## :mag: Citation <a name="citation"></a>
 ```bibtex
-
+@article{niu2024scsd,
+  title={Exploring Semantic Consistency and Style Diversity for Domain Generalized Semantic Segmentation},
+  author={Niu, Hongwei and Xie, Linhuang and Lin, Jianghang and Zhang, Shengchuan},
+  journal={arXiv preprint arXiv:2412.12050},
+  year={2024}
+}
 ```
 
 ## :scroll: License <a name="license"></a>

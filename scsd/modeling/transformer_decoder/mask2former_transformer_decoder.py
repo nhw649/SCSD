@@ -371,7 +371,7 @@ class MultiScaleMaskedTransformerDecoder(nn.Module):
 
         return ret
     
-    def enhance_query(self, query, clip_pool_dense, text_features):
+    def sqb(self, query, clip_pool_dense, text_features):
         """Semantic Query Booster
         query: [N, B, D]
         clip_pool_dense: [B, D, H, W]
@@ -423,7 +423,7 @@ class MultiScaleMaskedTransformerDecoder(nn.Module):
         query_embed = self.query_embed.weight.unsqueeze(1).repeat(1, bs, 1)
         output = self.query_feat.weight.unsqueeze(1).repeat(1, bs, 1)
 
-        output = self.enhance_query(output, clip_pool_dense, text_classifier)
+        output = self.sqb(output, clip_pool_dense, text_classifier)
         predictions_class = []
         predictions_mask = []
 

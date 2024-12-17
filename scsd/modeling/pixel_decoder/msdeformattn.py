@@ -324,67 +324,6 @@ class MSDeformAttnPixelDecoder(nn.Module):
         ret["clip_embed_dim"] = cfg.MODEL.CLIP.EMBED_DIM
         return ret
 
-    def save_phase_as_image(self, feature_maps, output_dir, batched_inputs, f):
-        B, D, H, W = feature_maps.shape
-        os.makedirs(output_dir, exist_ok=True)
-
-        for b in range(B):
-            file_name = batched_inputs[b]["file_name"].split("/")[-1].split(".")[0]
-            if file_name != "00458":
-                continue
-            origin_img = batched_inputs[b]["image"]
-            origin_height, origin_width = origin_img.shape[-2], origin_img.shape[-1]
-            # # 在通道维度取平均
-            averaged_feature_map = feature_maps[b].mean(dim=0)
-
-            min_val = averaged_feature_map.min().item()
-            max_val = averaged_feature_map.max().item()
-            if max_val - min_val < 1e-5:  # 如果值范围太小，调整范围
-                min_val = 0
-                max_val = 1
-            
-            # # 将特征图归一化到0-255范围内
-            # normalized_feature_map = 255 * (averaged_feature_map - averaged_feature_map.min()) / (averaged_feature_map.max() - averaged_feature_map.min())
-            # normalized_feature_map = normalized_feature_map.to(torch.uint8)
-            # print(normalized_feature_map)
-            # 将特征图归一化到0-255范围内，并增加偏移量
-            normalized_feature_map = 255 * (averaged_feature_map - min_val) / (max_val - min_val)
-            if output_dir == "source_amp_shifted":
-                normalized_feature_map = normalized_feature_map.clamp(0, 255) + 50  # 增加偏移量
-            normalized_feature_map = normalized_feature_map.clamp(0, 255)  # 再次限制在0-255范围内
-            normalized_feature_map = normalized_feature_map.to(torch.uint8)
-            # 将tensor转换为PIL图像
-            feature_map_image = Image.fromarray(normalized_feature_map.cpu().numpy())
-
-            # 调整大小到原始图像尺寸
-            feature_map_image = feature_map_image.resize((origin_width, origin_height), Image.BILINEAR)
-
-            # 保存图像
-            output_path = os.path.join(output_dir, f"{file_name}_{f}_avg.png")
-            feature_map_image.save(output_path)
-
-            for d in range(5):
-                # feature_map_image = Image.fromarray(feature_maps[b, d].detach().cpu().numpy())
-                phase_img = feature_maps[b, d]
-                phase_img_normalized = ((phase_img - phase_img.min()) / (phase_img.max() - phase_img.min()) * 255).to(torch.uint8)
-                phase_img_normalized = Image.fromarray(phase_img_normalized.detach().cpu().numpy())
-                img_resized = phase_img_normalized.resize((origin_width, origin_height), Image.BILINEAR)
-                output_path = os.path.join(output_dir, f"{file_name}_{f}_{d}.png")
-                img_resized.save(output_path)
-                
-
-            # for d in range(D):
-            #     # 归一化特征图到 [0, 255]
-            #     feature_map = feature_maps[b, d].detach().cpu().numpy()
-            #     feature_map = (feature_map - feature_map.min()) / (feature_map.max() - feature_map.min())
-            #     feature_map = (feature_map * 255).astype(np.uint8)
-
-            #     # 保存为图片
-            #     img = Image.fromarray(feature_map)
-            #     img_resized = img.resize((origin_width, origin_height), Image.BILINEAR)
-            #     print(img_resized)
-            #     img_resized.save(os.path.join(output_dir, f'{file_name}_batch_{b}_depth_{d}.png'))
-
     def save_tensor_as_image(self, feature_maps, output_dir, batched_inputs, f):
         B, D, H, W = feature_maps.shape
         os.makedirs(output_dir, exist_ok=True)
@@ -396,32 +335,21 @@ class MSDeformAttnPixelDecoder(nn.Module):
                 continue
             origin_img = batched_inputs[b]["image"]
             origin_height, origin_width = origin_img.shape[-2], origin_img.shape[-1]
-            # # 在通道维度取平均
             averaged_feature_map = feature_maps[b].mean(dim=0)
 
             min_val = averaged_feature_map.min().item()
             max_val = averaged_feature_map.max().item()
-            if max_val - min_val < 1e-5:  # 如果值范围太小，调整范围
+            if max_val - min_val < 1e-5:
                 min_val = 0
                 max_val = 1
             
-            # # 将特征图归一化到0-255范围内
+            # 归一化
             normalized_feature_map = 255 * (averaged_feature_map - averaged_feature_map.min()) / (averaged_feature_map.max() - averaged_feature_map.min())
             normalized_feature_map = normalized_feature_map.to(torch.uint8)
-            # print(normalized_feature_map)
-            # 将特征图归一化到0-255范围内，并增加偏移量
-            # normalized_feature_map = 255 * (averaged_feature_map - min_val) / (max_val - min_val)
-            # if output_dir == "source_amp_shifted":
-            #     normalized_feature_map = normalized_feature_map.clamp(0, 255)  # 增加偏移量
-            # normalized_feature_map = normalized_feature_map.clamp(0, 255)  # 再次限制在0-255范围内
-            # normalized_feature_map = normalized_feature_map.to(torch.uint8)
-            # 将tensor转换为PIL图像
             feature_map_image = Image.fromarray(normalized_feature_map.detach().cpu().numpy())
 
-            # 调整大小到原始图像尺寸
             feature_map_image = feature_map_image.resize((origin_width, origin_height), Image.BILINEAR)
 
-            # 保存图像
             output_path = os.path.join(output_dir, f"{file_name}_{f}_avg.png")
             feature_map_image.save(output_path)
 
@@ -433,67 +361,30 @@ class MSDeformAttnPixelDecoder(nn.Module):
                 img_resized = phase_img_normalized.resize((origin_width, origin_height), Image.BILINEAR)
                 output_path = os.path.join(output_dir, f"{file_name}_{f}_{d}.png")
                 img_resized.save(output_path)
-            # for d in range(D):
-            #     # 归一化特征图到 [0, 255]
-            #     feature_map = feature_maps[b, d].detach().cpu().numpy()
-            #     feature_map = (feature_map - feature_map.min()) / (feature_map.max() - feature_map.min())
-            #     feature_map = (feature_map * 255).astype(np.uint8)
-
-            #     # 保存为图片
-            #     img = Image.fromarray(feature_map)
-            #     img_resized = img.resize((origin_width, origin_height), Image.BILINEAR)
-            #     print(img_resized)
-            #     img_resized.save(os.path.join(output_dir, f'{file_name}_batch_{b}_depth_{d}.png'))
 
     def style_transformation(self, image_features, style_diff_embeddings, batched_inputs, f, is_all_zero=False, beta=1, low_freq_ratio=0.15):
         style_diff_features = self.style_adapter(style_diff_embeddings)
         style_diff_features = F.interpolate(style_diff_features, size=(image_features.shape[-2], image_features.shape[-1]), mode='bilinear')
 
-        # 计算傅里叶变换
         source_fft = fft.fft2(image_features, dim=(-2, -1))
-
-        # 分离幅度和相位
         source_amp, source_phase = torch.abs(source_fft), torch.angle(source_fft)
-        # self.save_tensor_as_image(source_phase, f'source_phase', batched_inputs, f)
-
-        # 使用 fftshift 将频谱数据重新排列，使得零频率分量位于数组的中心位置
         source_amp_shifted = fft.fftshift(source_amp)
-        # self.save_tensor_as_image(source_amp_shifted, f'source_amp_shifted', batched_inputs, f)
 
-        # 获取图像的尺寸
         B, C, H, W = image_features.shape
-
-        # 计算低频区域的尺寸
         low_freq_h = int(H * low_freq_ratio)
         low_freq_w = int(W * low_freq_ratio)
-
-        # 构建低频掩码
         low_freq_mask = torch.zeros_like(source_amp_shifted)
         center_h = H // 2
         center_w = W // 2
+
         low_freq_mask[:, :, center_h - low_freq_h//2:center_h + low_freq_h//2, center_w - low_freq_w//2:center_w + low_freq_w//2] = 1
-
-        # 分离低频部分
         low_freq_amp = source_amp_shifted * low_freq_mask
-        # self.save_tensor_as_image(low_freq_amp, f'low_freq_amp', batched_inputs, f)
-
-        # 变换低频部分的幅度
         transformed_low_freq_amp = low_freq_amp * (1 + beta * torch.tanh(style_diff_features))
-        # self.save_tensor_as_image(transformed_low_freq_amp, f'transformed_low_freq_amp', batched_inputs, f)
-        
-        # 将变换后的低频部分和高频部分合并
         transformed_amp_shifted = source_amp_shifted.clone()
         transformed_amp_shifted[low_freq_mask == 1] = transformed_low_freq_amp[low_freq_mask == 1]
-        # self.save_tensor_as_image(transformed_amp_shifted, f'transformed_amp_shifted', batched_inputs, f)
 
-        # 使用 ifftshift 将频谱数据重新排列回原始位置
         transformed_amp = fft.ifftshift(transformed_amp_shifted)
-        # self.save_tensor_as_image(transformed_amp, f'transformed_amp', batched_inputs, f)
-
-        # 混合新的幅度和原始相位
         transformed_fft = torch.polar(transformed_amp, source_phase)
-
-        # 计算逆傅里叶变换
         transformed_features = fft.ifft2(transformed_fft, dim=(-2, -1)).real  # [B, C, H, W]
 
         return transformed_features
